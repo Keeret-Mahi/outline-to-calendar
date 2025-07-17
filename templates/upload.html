@@ -3,9 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Outlines -> Calendar</title>
 </head>
 <body>
-    <h1>Upload Page</h1>
+    <div class="content-section">
+        <form method="POST" enctype="multipart/form-data" action="">
+            {{ form.hidden_tag() }}
+            <fieldset>
+                <legend>Upload Forms</legend>
+                <div class="form-group">
+                    {{ form.outlines.label }}<br>
+                    {{ form.outlines() }}  <!-- This renders the actual file input field -->
+                </div>
+                <br>
+                <div class="form-group">
+                    {{ form.submit() }}  <!-- This renders the submit button -->
+                </div>
+            </fieldset>
+        </form>
+    </div>
 </body>
 </html>
