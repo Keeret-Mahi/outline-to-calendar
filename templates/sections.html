@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Uploaded Files</title>
+</head>
+<body>
+    <h1>Uploaded Files</h1>
+
+    <form method="POST" action="{{ url_for('process_sections') }}">
+        <table border="1">
+            <tr>
+                <th>#</th>
+                <th>Filename</th>
+                <th>Section Number</th>
+            </tr>
+            {% for file in uploaded_files %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ file }}</td>
+                <td>
+                    <input type="text" name="section_{{ loop.index }}" required>
+                    <input type="hidden" name="filename_{{ loop.index }}" value="{{ file }}">
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <br>
+        <input type="hidden" name="total_files" value="{{ uploaded_files|length }}">
+        <button type="submit">Submit Sections</button>
+    </form>
+</body>
+</html>
+
+
+
+<!--
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Uploaded Files</title>
+</head>
+<body>
+    <h1>Uploaded Files</h1>
+    {% if uploaded_files %}
+        <table border="1">
+            <tr>
+                <th>#</th>
+                <th>Filename</th>
+            </tr>
+            {% for file in uploaded_files %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ file }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        
+    {% else %}
+        <p>No files uploaded.</p>
+    {% endif %}
+
+    <br>
+    <a href="{{ url_for('upload') }}">Upload more</a>
+</body>
+</html>
+
+-!>
