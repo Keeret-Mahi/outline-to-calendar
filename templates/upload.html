@@ -1,26 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Outlines -> Calendar</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Syllabus Calendar</title>
+
+  <!-- main CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/upload.css') }}">
+
+  <!-- Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="content-section">
-        <form method="POST" enctype="multipart/form-data" action="">
-            {{ form.hidden_tag() }}
-            <fieldset>
-                <legend>Upload Forms</legend>
-                <div class="form-group">
-                    {{ form.outlines.label }}<br>
-                    {{ form.outlines() }}  <!-- This renders the actual file input field -->
-                </div>
-                <br>
-                <div class="form-group">
-                    {{ form.submit() }}  <!-- This renders the submit button -->
-                </div>
-            </fieldset>
-        </form>
+
+  <div class="logo">📅 <span>Syllabus 2 Calendar</span></div>
+
+  <h1>From Syllabus to Calendar<br><span>in Seconds</span></h1>
+  <p class="subtitle">
+    Convert your UWaterloo course outlines into .ics calendar files<br>
+    which can be seamlessly imported into Google or Apple Calendar.
+  </p>
+
+  <!-- full form -->
+  <form id="upload-form" method="POST" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+
+    <!-- dashed drop area -->
+    <div class="upload-box" id="drop-area">
+      <div class="upload-text">
+        <img src="{{ url_for('static', filename='images/file-icon.png') }}" alt="Logo" class = "form-icon">
+        <strong>Upload your course outlines here</strong><br>
+        <small>.html files only</small>
+      </div>
+
+      <!-- hidden native input -->
+      {{ form.outlines(id="fileElem", style="display:none;", multiple=true) }}
+
+      <!-- custom choose button + file count -->
+      <label for="fileElem" class="choose-btn">Choose files</label>
+      <div id="file-name" class="file-name">No files selected</div>
     </div>
+
+    <!-- Next button beneath the box -->
+    <div class="next-wrapper">
+      {{ form.submit(class_="submit-button") }}
+    </div>
+  </form>
+
+  <p class="video-hint">ⓘ Watch a Video to See How it Works</p>
+
+  <!-- inline JS -->
+  <script type="text/javascript">
+    (function () {
+      const box      = document.getElementById('drop-area');
+      const input    = document.getElementById('fileElem');
+      const fileName = document.getElementById('file-name');
+
+      /* click anywhere inside dashed box */
+      box.addEventListener('click', e => {
+        if (e.target.tagName !== 'LABEL' && e.target !== input) {
+          input.click();
+        }
+      });
+
+      /* drag‑and‑drop */
+      ['dragenter','dragover'].forEach(evt =>
+        box.addEventListener(evt, e => { e.preventDefault(); box.classList.add('highlight'); })
+      );
+      ['dragleave','drop'].forEach(evt =>
+        box.addEventListener(evt, () => box.classList.remove('highlight'))
+      );
+      box.addEventListener('drop', e => {
+        e.preventDefault();
+        if (e.dataTransfer.files.length) {
+          input.files = e.dataTransfer.files;
+          updateLabel();
+        }
+      });
+
+      /* filename / count display */
+      input.addEventListener('change', updateLabel);
+
+      function updateLabel () {
+        const count = input.files.length;
+        if (count === 0) {
+          fileName.textContent = 'No files selected';
+        } else if (count === 1) {
+          fileName.textContent = '1 File';
+        } else {
+          fileName.textContent = count + ' Files';
+        }
+      }
+    })();
+  </script>
 </body>
 </html>
