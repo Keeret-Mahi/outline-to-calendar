@@ -1,8 +1,13 @@
-from flask import Flask, render_template, flash, redirect, request, session
+from flask import Flask, render_template, flash, redirect, request, session, url_for
 from dotenv import load_dotenv
 import os
-from forms import UploadForm
 from werkzeug.utils import secure_filename
+from bs4 import BeautifulSoup
+
+from forms import UploadForm
+from outline_parser import extract_section_info
+from calendar_utils import make_calendar
+
 
 # Load environment variables
 load_dotenv()
@@ -28,13 +33,12 @@ def upload():
 
         session['uploaded_files'] = uploaded_files
         return redirect("sections") 
-        #flash("File(s) uploaded successfully!", "success")
-        #print("Uploaded files:", uploaded_files)
+
     
     return render_template("upload.html", title="Outline -> Calendar", form=form)
 
 # Section Numbers Page
-@app.route("/sections")
+@app.route("/sections", methods=['GET'])
 def success():
     files = session.get('uploaded_files', [])
     return render_template("sections.html", uploaded_files=files)
@@ -43,16 +47,28 @@ def success():
 @app.route('/process_sections', methods=['POST'])
 def process_sections():
     total = int(request.form['total_files'])
-    file_section_pairs = []
+    info_list = []
 
     for i in range(1, total + 1):
         filename = request.form.get(f'filename_{i}')
-        section  = request.form.get(f'section_{i}')
-        file_section_pairs.append((filename, section))
+        section = request.form.get(f'section_{i}')
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
 
-    # Do something with file_section_pairs
-    return render_template('summary.html', data=file_section_pairs)
+        with open(file_path, 'r', encoding='utf-8') as f:
+            soup = BeautifulSoup(f, 'html.parser')
+            try:
+                info = extract_section_info(soup, section)
+                info_list.append(info)
+            except ValueError as e:
+                flash(f"{filename}: {str(e)}", "error")
+                return redirect(url_for('errors'))
 
+    return make_calendar(info_list)
+
+# Error Messags
+@app.route('/errors')
+def errors():
+    return render_template("errors.html")
 
 # Debug
 if __name__ == "__main__":

@@ -1,8 +1,5 @@
 from bs4 import BeautifulSoup
 
-with open("Winter 2025_ Elementary Algorithm Design and Data Abstraction.html", "r", encoding="utf-8") as f:
-    doc = BeautifulSoup(f, "html.parser")
-
 def extract_section_info(soup, target_section):
     # Extract course-wide data
     course_name = " ".join(soup.title.string.strip().split()) if soup.title else "N/A"
@@ -54,7 +51,4 @@ def extract_section_info(soup, target_section):
                 "term_span": term_span
             }
 
-    return None
-
-# info = extract_section_info(doc, "003")
-# print(info)
+    raise ValueError(f"Section {target_section} not found in the outline. Please check section number.")
