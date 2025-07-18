@@ -12,8 +12,8 @@ body {
 
 .logo {
   position: absolute;
-  top: 24px;
-  left: 24px;
+  top: -30px;
+  left: 12px;
   display: flex;
   align-items: center;
   font-size: 20px;
@@ -21,7 +21,9 @@ body {
   color: #204dcc;
 }
 
-.logo span { margin-left: 8px; }
+.logo img {
+    width: 170px;
+}
 
 h1 {
   margin-top: 125px;
@@ -34,6 +36,8 @@ h1 {
 h1 span { color: #204dcc; }
 
 p.subtitle {
+  margin-left: auto;
+  margin-right: auto;
   margin-top: -15px;
   max-width: 600px;
   font-size: 19px;
@@ -108,3 +112,24 @@ p.subtitle {
 }
 
 .video-hint:hover { text-decoration: underline; font-weight: 600; }
+
+/* --- cards row --- */
+.cards-wrapper{
+  display:flex;
+  justify-content:space-between;
+  max-width:660px;   /* tune based on card size */
+  margin:30px auto;  /* centers the pair */
+}
+
+/* ─── hero card positions ───────────────────────────── */
+.hero        { position: relative; }
+.card-img    { position: absolute; width: 180px;
+                filter: drop-shadow(0 8px 10px rgba(0,0,0,.12)); }
+.card-img.left  { left: -375px; top: 175px;  transform: rotate(-10deg); }
+.card-img.right { right: -375px; top: 175px; transform: rotate( 10deg); }
+
+/* shrink / hide on small screens */
+@media (max-width: 900px){
+    .card-img { display:none; }
+    }
+
