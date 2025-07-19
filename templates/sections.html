@@ -1,38 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Uploaded Files</title>
+  <meta charset="UTF-8">
+  <title>Enter Sections | Syllabus Calendar</title>
+
+  <!-- shared stylesheet -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/sections.css') }}">
+
+  <!-- Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Uploaded Files</h1>
+    <div class="logo">
+        <img src="{{ url_for('static', filename='images/logo.png') }}"  alt="outline file">
+    </div>
 
-    <form method="POST" action="{{ url_for('process_sections') }}">
-        <table border="1">
-            <tr>
-                <th>#</th>
-                <th>Filename</th>
-                <th>Section Number</th>
-            </tr>
-            {% for file in uploaded_files %}
-            <tr>
-                <td>{{ loop.index }}</td>
-                <td>{{ file }}</td>
-                <td>
-                    <input type="text" name="section_{{ loop.index }}" required>
-                    <input type="hidden" name="filename_{{ loop.index }}" value="{{ file }}">
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
-        <br>
-        <input type="hidden" name="total_files" value="{{ uploaded_files|length }}">
-        <button type="submit">Submit Sections</button>
-    </form>
+  <h1>Enter Section Numbers Below</h1>
+
+  <form method="POST" action="{{ url_for('process_sections') }}">
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:60px;">#</th>
+            <th class="filename-col">Filename</th>
+            <th class="section-col">Section</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for file in uploaded_files %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td class="filename-col">{{ file }}</td>
+            <td class="section-col">
+              <input type="text"
+                     name="section_{{ loop.index }}"
+                     placeholder="001"
+                     required>
+              <input type="hidden"
+                     name="filename_{{ loop.index }}"
+                     value="{{ file }}">
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <input type="hidden" name="total_files" value="{{ uploaded_files|length }}">
+    <button type="submit" class="generate-btn">Generate Calendar</button>
+  </form>
+
 </body>
 </html>
-
-
 
 <!--
 

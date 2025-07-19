@@ -1,20 +1,23 @@
     const dropArea = document.getElementById('drop-area');
     const fileInput = document.getElementById('fileElem');
 
-    dropArea.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      dropArea.classList.add('highlight');
+    ;['dragenter', 'dragover'].forEach(eventName => {
+      dropArea.addEventListener(eventName, e => {
+        e.preventDefault();
+        dropArea.classList.add('highlight');
+      }, false);
     });
 
-    dropArea.addEventListener('dragleave', () => {
-      dropArea.classList.remove('highlight');
+    ;['dragleave', 'drop'].forEach(eventName => {
+      dropArea.addEventListener(eventName, e => {
+        e.preventDefault();
+        dropArea.classList.remove('highlight');
+      }, false);
     });
 
-    dropArea.addEventListener('drop', (e) => {
+    dropArea.addEventListener('drop', e => {
       e.preventDefault();
-      dropArea.classList.remove('highlight');
-      const files = e.dataTransfer.files;
-      if (files.length > 0) {
-        fileInput.files = files;
+      if (e.dataTransfer.files.length) {
+        fileInput.files = e.dataTransfer.files;
       }
     });
