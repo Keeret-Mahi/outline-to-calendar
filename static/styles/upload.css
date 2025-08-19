@@ -123,13 +123,13 @@ p.subtitle {
 
 /* ─── hero card positions ───────────────────────────── */
 .hero        { position: relative; }
-.card-img    { position: absolute; width: 180px;
+.card-img    { position: absolute;;
                 filter: drop-shadow(0 8px 10px rgba(0,0,0,.12)); }
-.card-img.left  { left: -375px; top: 175px;  transform: rotate(-10deg); }
-.card-img.right { right: -375px; top: 175px; transform: rotate( 10deg); }
+.card-img.left  { left: -375px; top: 175px;  transform: rotate(-10deg); width: 230px }
+.card-img.right { right: -375px; top: 175px; transform: rotate( 10deg); width: 272px}
 
 /* shrink / hide on small screens */
-@media (max-width: 900px){
+@media (max-width: 1000px){
     .card-img { display:none; }
     }
 
