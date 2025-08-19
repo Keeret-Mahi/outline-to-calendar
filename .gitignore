@@ -1,0 +1,11 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# Environment & local stuff
+.env
+venv/
+.DS_Store
+
+# User uploads (don’t commit)
+uploads/
