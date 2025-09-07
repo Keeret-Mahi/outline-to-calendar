@@ -17,7 +17,7 @@ Convert university course outlines into a unified calendar automatically.
 1. **Upload** – Drag in or upload .html files of your UWaterloo Course Outlines. 
 2. **Process** – BeautifulSoup scrapes outlines and extracts structured schedule data
 3. **Generate** – The app compiles everything into a unified `.ics` file.  
-4. **Import** – Add it to your calendar app of choice — done!
+4. **Import** – Add it to your calendar app of choice
 
 ## 🛠 Tech Stack  
 
